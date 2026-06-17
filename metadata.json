@@ -1,5 +1,5 @@
 {
-  "name": "Vikki Panel",
+  "name": "Dracula Panel",
   "description": "Futuristic wingo signal predictor dashboard",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

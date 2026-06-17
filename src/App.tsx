@@ -7,43 +7,12 @@ import { useState, useEffect } from 'react';
 
 type HackState = 'wingo' | 'scanning' | 'result';
 
-const Particles = () => {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {Array.from({ length: 15 }).map((_, i) => {
-        const size = Math.random() * 12 + 8;
-        const number = Math.floor(Math.random() * 10);
-        return (
-          <div
-            key={i}
-            className="absolute font-mono font-bold"
-            style={{
-              fontSize: `${size}px`,
-              color: Math.random() > 0.5 ? 'rgba(255, 31, 68, 0.4)' : 'rgba(157, 75, 255, 0.4)',
-              textShadow: `0 0 ${size/2}px ${Math.random() > 0.5 ? '#ff1f44' : '#ff2bd6'}`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `floatUp ${Math.random() * 15 + 15}s linear infinite`,
-              animationDelay: `-${Math.random() * 20}s`,
-              opacity: 0,
-              willChange: 'transform, opacity'
-            }}
-          >
-            {number}
-          </div>
-        );
-      })}
-    </div>
-  );
-};
-
 export default function App() {
   const [appState, setAppState] = useState<HackState>('wingo');
   const [resultStore, setResultStore] = useState<Record<string, { out: string; p: string }>>({});
   const [confidence, setConfidence] = useState(87);
   const [currentResult, setCurrentResult] = useState('');
   const [currentPeriodSlice, setCurrentPeriodSlice] = useState('');
-  const [unlockMessage, setUnlockMessage] = useState('');
 
   const getP = () => {
     const d = new Date();
@@ -94,21 +63,11 @@ export default function App() {
   };
 
   return (
-    <>
-      <div className="fixed inset-0 z-[-1]" style={{
-        backgroundImage: 'url("/src/assets/images/real_sexy_girl_penthouse_upgrade_1781421050036.jpg")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'top center',
-        backgroundRepeat: 'no-repeat',
-      }}>
-        <div className="absolute inset-0" style={{ animation: 'pulseOverlay 4s infinite alternate' }}></div>
-        <Particles />
-      </div>
-
-      <div className="stage" style={{
-        background: 'transparent'
-      }}>
-        <div className="frame" style={{ marginBottom: '5px' }}>
+    <div className="stage">
+      <div className="frame">
+        <div className="frame-glow"></div>
+        <div className="frame-border"></div>
+        <div className="frame-inner"></div>
         
         <span className="rivet tl"></span>
         <span className="rivet tr"></span>
@@ -117,9 +76,9 @@ export default function App() {
         <span className="notch left"></span>
         <span className="notch right"></span>
         
-        <div className="head" style={{ marginTop: '30px' }}>
-          <div className="title" style={{ textShadow: '0 2px 10px rgba(255,255,255,0.5)' }}>
-            SEXY<small>NUMBER PANNEL</small>
+        <div className="head">
+          <div className="title">
+            DRACULA<small>NUMBER PANNEL</small>
           </div>
           <div className="badge">ACTV</div>
         </div>
@@ -156,72 +115,22 @@ export default function App() {
           </div>
         </div>
         
-        <div className="actions" style={{ flexDirection: 'column', gap: '12px' }}>
-          <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
-            <button 
-              className="btn btn-analyze" 
-              style={{ flex: 1 }}
-              onClick={appState === 'result' ? handleNext : handleStart}
-              disabled={appState === 'scanning'}
-            >
-              {appState === 'scanning' ? 'WAIT...' : appState === 'result' ? 'NEXT HACK' : 'START'}
-            </button>
-            <button className="btn btn-hide" style={{ flex: 1 }} onClick={() => {
-              setAppState('wingo');
-              setResultStore({});
-              setUnlockMessage('');
-            }}>
-              RESET
-            </button>
-          </div>
-          
-          <a 
-            href="https://tnxjatavji-boop.github.io/Papa-payment-page-/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-unlock"
-            onClick={() => setUnlockMessage('Initiating Level 1 Authorization... Secure channel opening.')}
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              textDecoration: 'none',
-              background: 'linear-gradient(135deg, rgba(255, 215, 0, 0.9), rgba(255, 120, 0, 0.5))',
-              boxShadow: '0 8px 25px rgba(255, 215, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.6)',
-              color: '#fff',
-              textShadow: '0 0 8px rgba(255,255,255,0.8)',
-              border: '1px solid rgba(255, 215, 0, 0.6)',
-              borderRadius: '8px',
-              padding: '14px 10px',
-              fontWeight: 900,
-              fontSize: '14px',
-              animation: 'pulseButton 2.5s infinite alternate'
-            }}
+        <div className="actions">
+          <button 
+            className="btn btn-analyze" 
+            onClick={appState === 'result' ? handleNext : handleStart}
+            disabled={appState === 'scanning'}
           >
-            <span>🔓</span> UNLOCK 99% ACCURACY LEVEL
-          </a>
-
-          {unlockMessage && (
-            <div style={{
-              marginTop: '10px',
-              padding: '8px',
-              background: 'rgba(255, 215, 0, 0.1)',
-              border: '1px solid rgba(255, 215, 0, 0.3)',
-              borderRadius: '4px',
-              color: '#ffd700',
-              fontSize: '12px',
-              fontFamily: 'Share Tech Mono, monospace',
-              textAlign: 'center',
-              textShadow: '0 0 5px rgba(255, 215, 0, 0.5)',
-              animation: 'pulseOverlay 2s infinite alternate'
-            }}>
-              {unlockMessage}
-            </div>
-          )}
+            {appState === 'scanning' ? 'WAIT...' : appState === 'result' ? 'NEXT HACK' : 'START'}
+          </button>
+          <button className="btn btn-hide" onClick={() => {
+            setAppState('wingo');
+            setResultStore({});
+          }}>
+            RESET
+          </button>
         </div>
       </div>
     </div>
-    </>
   );
 }

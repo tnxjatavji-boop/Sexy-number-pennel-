@@ -36,49 +36,45 @@ body {
 /* Base Stage */
 .stage {
   width: 320px;
-  height: 568px; /* 9:16 aspect ratio base */
   position: relative;
   filter: drop-shadow(0 0 20px rgba(255,31,68,.4));
-  transform: scale(1.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; /* push content down to see the girl's face */
+  transform: scale(1.2);
 }
 
 .frame {
+  --clip: polygon(6% 0, 94% 0, 100% 8%, 100% 70%, 92% 78%, 100% 86%, 100% 96%, 88% 100%, 12% 100%, 0 96%, 0 86%, 8% 78%, 0 70%, 0 8%);
   position: relative;
   padding: 24px 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-top: 1px solid rgba(255, 255, 255, 0.7);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.3), 
-              0 0 30px rgba(255, 255, 255, 0.1), 
-              inset 0 0 20px rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  margin-top: auto; 
-  animation: floatFrame 5s ease-in-out infinite;
-  will-change: transform;
-}
-
-@keyframes floatFrame {
-  0% { transform: translate3d(0, 0px, 0); }
-  50% { transform: translate3d(0, -5px, 0); }
-  100% { transform: translate3d(0, 0px, 0); }
+  clip-path: var(--clip);
+  background: linear-gradient(180deg, rgba(255,31,68,.08), transparent 30%),
+              radial-gradient(120% 80% at 50% 0%, #260014 0%, #0e0010 55%, #03000a 100%);
 }
 
 .frame-glow {
-  display: none;
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(180deg, var(--red) 0%, var(--magenta) 50%, var(--purple) 100%);
+  clip-path: var(--clip);
+  filter: blur(6px);
+  opacity: .7;
+  z-index: -2;
 }
 
 .frame-border {
-  display: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--red), var(--magenta) 55%, var(--purple));
+  clip-path: var(--clip);
+  z-index: -1;
 }
 
 .frame-inner {
-  display: none;
+  position: absolute;
+  inset: 1.5px;
+  background: linear-gradient(180deg, rgba(255,31,68,.06), transparent 30%),
+              radial-gradient(120% 80% at 50% 0%, #260014 0%, #0e0010 55%, #03000a 100%);
+  clip-path: var(--clip);
+  z-index: -1;
 }
 
 /* Details */
@@ -176,14 +172,12 @@ body {
 .screen {
   position: relative;
   margin: 0 2px;
-  height: 200px;
-  border-radius: 12px;
+  height: 150px;
+  border-radius: 8px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: inset 0 0 20px rgba(255,255,255,0.2), 0 5px 15px rgba(0,0,0,0.2);
+  background: radial-gradient(120% 90% at 50% 50%, #2a0014 0%, #14000a 55%, #060003 100%);
+  border: 1px solid rgba(255,31,68,.5);
+  box-shadow: inset 0 0 20px rgba(255,31,68,.4), inset 0 0 60px rgba(157,75,255,.18), 0 0 0 1px rgba(0,0,0,.5);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -201,14 +195,13 @@ body {
 .screen::after {
   content: '';
   position: absolute;
-  inset: -24px 0 0 0;
+  inset: 0;
   pointer-events: none;
   background: repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 3px);
   animation: scanlines 6s linear infinite;
-  will-change: transform;
 }
 @keyframes scanlines {
-  to { transform: translate3d(0, 24px, 0); }
+  to { background-position: 0 24px; }
 }
 
 .crosshair {
@@ -235,15 +228,14 @@ body {
   width: 140%;
   aspect-ratio: 1;
   border-radius: 50%;
-  transform: translate(-50%, -50%) translateZ(0);
+  transform: translate(-50%, -50%);
   background: conic-gradient(from 0deg, rgba(255,31,68,.5), rgba(157,75,255,.2) 40deg, rgba(255,31,68,0) 80deg, transparent 360deg);
   mix-blend-mode: screen;
   animation: spinSweep 3s linear infinite;
   mask-image: radial-gradient(circle, #000 60%, transparent 70%);
-  will-change: transform;
 }
 @keyframes spinSweep {
-  to { transform: translate(-50%, -50%) rotate(360deg) translateZ(0); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 .locator {
@@ -299,11 +291,10 @@ body {
   background: linear-gradient(90deg, transparent, var(--red) 50%, transparent);
   box-shadow: 0 0 14px var(--red), 0 0 30px rgba(255,31,68,.6);
   animation: scan 2.4s linear infinite;
-  will-change: transform;
 }
 @keyframes scan {
-  0% { transform: translate3d(0, -180%, 0); }
-  100% { transform: translate3d(0, 180%, 0); }
+  0% { transform: translateY(-180%); }
+  100% { transform: translateY(180%); }
 }
 
 .meta {
@@ -322,27 +313,25 @@ body {
   font-family: 'Share Tech Mono', monospace;
   font-size: 10px;
   letter-spacing: 1px;
-  color: #fff;
+  color: #ffe9ef;
   padding: 4px 10px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2), inset 0 0 5px rgba(255,255,255,0.1);
-  backdrop-filter: blur(4px);
+  border-radius: 4px;
+  background: linear-gradient(180deg, #1a0020, #06000a);
+  border: 1px solid rgba(157,75,255,.5);
+  box-shadow: 0 0 6px rgba(157,75,255,.3), inset 0 0 4px rgba(157,75,255,.2);
 }
 .pill.red {
-  color: #ffb6c4;
-  border-color: rgba(255,31,68,.5);
-  background: rgba(255,31,68,.1);
-  box-shadow: 0 4px 10px rgba(255,31,68,.2), inset 0 0 5px rgba(255,31,68,.1);
-  text-shadow: 0 0 8px rgba(255,31,68,.5);
+  color: #ffd6df;
+  border-color: rgba(255,31,68,.6);
+  background: linear-gradient(180deg, #2a0010, #10020a);
+  box-shadow: 0 0 6px rgba(255,31,68,.3), inset 0 0 4px rgba(255,31,68,.2);
 }
 
 .bracket {
   position: absolute;
   width: 14px;
   height: 14px;
-  border: 1.5px solid rgba(255,255,255,0.6);
+  border: 1.5px solid var(--red);
   opacity: .8;
 }
 .bracket.tl { top: 6px; left: 6px; border-right: none; border-bottom: none; }
@@ -352,8 +341,8 @@ body {
 
 .actions {
   display: flex;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 18px;
   position: relative;
   z-index: 5;
 }
@@ -371,21 +360,16 @@ body {
   padding: 12px 10px;
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: transform .12s ease, box-shadow .2s ease;
-  backdrop-filter: blur(8px);
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0 50%);
+  transition: transform .12s ease;
 }
 .btn::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.4) 50%, transparent 70%);
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.3) 50%, transparent 70%);
   transform: translateX(-120%);
   transition: transform .6s ease;
-}
-.btn:hover {
-  box-shadow: 0 0 20px rgba(255,255,255,0.2);
 }
 .btn:hover::before {
   transform: translateX(120%);
@@ -394,28 +378,10 @@ body {
   transform: scale(0.95);
 }
 .btn-analyze {
-  background: linear-gradient(135deg, rgba(255,31,68,0.8), rgba(255,31,68,0.4));
-  box-shadow: 0 5px 15px rgba(255,31,68,.4), inset 0 1px 0 rgba(255,255,255,.4);
-  animation: pulseButton 2s infinite alternate;
-}
-
-@keyframes pulseButton {
-  from { box-shadow: 0 5px 15px rgba(255,31,68,.4), inset 0 1px 0 rgba(255,255,255,.4); text-shadow: 0 0 5px rgba(255,255,255,0.5); }
-  to { box-shadow: 0 5px 25px rgba(255,31,68,.8), inset 0 1px 0 rgba(255,255,255,.6); text-shadow: 0 0 10px rgba(255,255,255,1); }
+  background: linear-gradient(180deg, #ff1f44 0%, #7a0018 100%);
+  box-shadow: 0 0 15px rgba(255,31,68,.5), inset 0 1px 0 rgba(255,255,255,.3);
 }
 .btn-hide {
-  background: linear-gradient(135deg, rgba(157,75,255,0.7), rgba(157,75,255,0.3));
-  box-shadow: 0 5px 12px rgba(157,75,255,.3), inset 0 1px 0 rgba(255,255,255,.2);
-}
-
-@keyframes floatUp {
-  0% { transform: translate3d(0, 10vh, 0) scale(0.5); opacity: 0; }
-  10% { opacity: 0.8; }
-  90% { opacity: 0.6; }
-  100% { transform: translate3d(0, -100vh, 0) scale(1.2); opacity: 0; }
-}
-
-@keyframes pulseOverlay {
-  0% { background-color: transparent; }
-  100% { background-color: rgba(255, 255, 255, 0.05); }
+  background: linear-gradient(180deg, #9d4bff 0%, #2a0a4a 100%);
+  box-shadow: 0 0 12px rgba(157,75,255,.4), inset 0 1px 0 rgba(255,255,255,.2);
 }
